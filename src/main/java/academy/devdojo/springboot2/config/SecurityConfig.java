@@ -11,9 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable()
+//                csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .authorizeRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -25,11 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         log.info("Password encoded {}", passwordEncoder.encode("test"));
         auth.inMemoryAuthentication()
-                .withUser("stefany")
+                .withUser("william")
                 .password(passwordEncoder.encode("academy"))
                 .roles("USER", "ADMIN")
                 .and()
-                .withUser("ste")
+                .withUser("devdojo")
                 .password(passwordEncoder.encode("academy"))
                 .roles("USER");
     }
