@@ -51,11 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("Password encoded {}", passwordEncoder.encode("academy"));
 
         auth.inMemoryAuthentication()
-                .withUser("stefany2")
+                .withUser("stefany")
                 .password(passwordEncoder.encode("academy"))
                 .roles("USER", "ADMIN")
                 .and()
-                .withUser("ste2")
+                .withUser("ste")
                 .password(passwordEncoder.encode("academy"))
                 .roles("USER");
 
