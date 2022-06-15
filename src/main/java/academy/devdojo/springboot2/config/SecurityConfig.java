@@ -1,5 +1,7 @@
 package academy.devdojo.springboot2.config;
 
+import academy.devdojo.springboot2.service.StefanyUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,7 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
+@SuppressWarnings("java:S5344")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final StefanyUserDetailsService stefanyUserDetailsService;
 
     /**
      * BasicAuthenticationFilter
@@ -21,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * DefaultLogoutPageGeneratingFilter
      * FilterSecurityInterceptor
      * Authentication -> Authorization
+     *
      * @param http
      * @throws Exception
      */
@@ -40,14 +46,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        log.info("Password encoded {}", passwordEncoder.encode("test"));
+        log.info("Password encoded {}", passwordEncoder.encode("academy"));
+
         auth.inMemoryAuthentication()
-                .withUser("stefany")
+                .withUser("stefany2")
                 .password(passwordEncoder.encode("academy"))
                 .roles("USER", "ADMIN")
                 .and()
-                .withUser("ste")
+                .withUser("ste2")
                 .password(passwordEncoder.encode("academy"))
                 .roles("USER");
+
+        auth.userDetailsService(stefanyUserDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 }
